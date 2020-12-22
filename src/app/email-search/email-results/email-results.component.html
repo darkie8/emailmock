@@ -1,1 +1,73 @@
-<p>email-results works!</p>
+<div class="mt-4 w-100">
+  <h6 class="pb-2 mb-0"
+    style="font-size: large; color: grey; border-bottom-color: #b6b5b5;border-bottom-style: solid;border-bottom-width: 3px;width: 100% !important;">
+    <span style="font-family: 'Space Grotesk', sans-serif;font-weight: 600;
+    ">Results: </span> <span style="font-weight: 600; font-size: larger;margin-right: 2px
+">{{mailCount}}</span> <span style="font-weight: 600;
+">mail(s)</span>
+  </h6>
+
+  <ng-container *ngIf="mailCount === 0; else elseTemplate">
+    <div class="d-flex align-items-center" style="width: 100% !important;height: 600px;">
+      <div class="w-100 d-flex justify-content-center">
+        <img src="assets/logo.png" width="150" alt="">
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #elseTemplate>
+    <div class="w-100">
+      <div class="w-100 row p-3 m-0"
+        style="background-color: #dfdfdf;color: rgb(99, 99, 99); border-bottom-color: #c1bdbd;border-bottom-style: solid;border-bottom-width: 2px;font-weight: 700;font-size:18;">
+        <span class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">From</span>
+        <span class="col-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">To</span>
+        <span class="col-5  col-sm-5 col-md-5 col-lg-5 col-xl-6">Subject</span>
+        <span class="col-1 col-sm-1 col-md-1 col-lg-1 col-xl-1 px-0  d-flex justify-content-start" (click)="sortingWhileRendering()"
+          style="color: black;"><span>Date</span><img class="mx-2 pt-1" width="10" src="assets/icon_arrow01.svg" alt="">
+        </span>
+      </div>
+      <div class="w-100">
+        <ng-container *ngTemplateOutlet="threadList"></ng-container>
+
+      </div>
+    </div>
+  </ng-template>
+
+</div>
+
+<!-- threadList -->
+<ng-template #threadList>
+  <div style="font-size: large;font-weight: 400;" class="w-100 row p-3 m-0 border-bottom border-secondary" *ngFor="let thread of threads; let i=index">
+    <ng-container *ngTemplateOutlet="threadIndividual;context:({thread: thread})"></ng-container>
+  </div>
+</ng-template>
+<!-- threadList -->
+
+<!-- threadIndividual -->
+<ng-template #threadIndividual let-threadData="thread">
+
+  <span class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 listtexts">{{threadData.From}}</span>
+  <span class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 listtexts">{{threadData.To}}</span>
+  <span class="col-1 col-sm-1 col-md-1 col-lg-1 col-xl-1 listtexts d-flex justify-content-center">
+    <span *ngIf="countOpened(threadData.emails) !== 0" class="badgenew px-1 align-items-center py-0" style="font-size: large;font-weight: bold;">+{{countOpened(threadData.emails)}}</span>
+  </span>
+  <span class="col-5  col-sm-5 col-md-5 col-lg-5 col-xl-5 listtexts">{{threadData.Subject}}</span>
+  <span class="col-1  col-sm-1 col-md-1 col-lg-1col-xl-1 listtexts"></span>
+  <span class="col-1 col-sm-1 col-md-1 col-lg-1 col-xl-1 listtexts px-0" style="color: black;font-weight: 700;">
+    <ng-container
+      *ngTemplateOutlet="dateTemplate;context:({dateModifier: dateDifference(threadData.emails[threadData.emails.length-1].date), date: threadData.emails[threadData.emails.length-1].date})">
+    </ng-container>
+  </span>
+
+</ng-template>
+<!-- threadIndividual -->
+
+<!-- dateTemplate -->
+<ng-template #dateTemplate let-dateModifier="dateModifier" let-dateThis="date">
+  <span
+    *ngIf="dateModifier.yearSame && dateModifier.monthSame && dateModifier.daySame">{{dateThis | date:'hh:mm'}}</span>
+  <span
+    *ngIf="dateModifier.yearSame && dateModifier.monthSame && !dateModifier.daySame">{{dateThis | date:'MMM d'}}</span>
+  <span *ngIf="!dateModifier.monthSame && !dateModifier.daySame">{{dateThis | date:'yyyy/MM/dd'}}</span>
+</ng-template>
+
+<!-- dateTemplate -->

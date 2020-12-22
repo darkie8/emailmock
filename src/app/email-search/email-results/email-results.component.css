@@ -1,0 +1,10 @@
+.listtexts {
+    text-overflow: ellipsis !important;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.badgenew {
+    color: #fff;
+    background-color: #94979a;
+    border-radius: 5px;
+}

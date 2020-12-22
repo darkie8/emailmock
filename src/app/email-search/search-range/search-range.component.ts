@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-search-range',
+  selector: 'search',
   templateUrl: './search-range.component.html',
   styleUrls: ['./search-range.component.css']
 })
 export class SearchRangeComponent implements OnInit {
 
+  rangeDates: Date[];
+  maxDate= new Date();
   constructor() { }
 
   ngOnInit(): void {
