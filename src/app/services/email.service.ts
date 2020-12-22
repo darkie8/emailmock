@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
-export interface Attachments {
+export interface Attachment {
   imageURL: string,
   fileURL: string,
   name: string
 }
 export interface email {
   body: string,
-  attachments?: Attachments[],
+  attachments?: Attachment[],
   date: Date,
   opened: boolean,
-  replyOf: number
+  replyOf: number,
+  replytTo?: string[],
+  replyFrom?: string
 }
 export interface EmailThread {
     To: string[],
@@ -158,7 +160,7 @@ export class EmailService {
         body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
          Unde repellendus accusamus quam esse qui ut facere minima,
          voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
-        date: new Date(),
+        date: new Date('2020'),
         opened: true,
         replyOf: 0
       },
@@ -166,7 +168,7 @@ export class EmailService {
        body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
         Unde repellendus accusamus quam esse qui ut facere minima,
         voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
-       date: new Date(),
+       date: new Date('2020'),
        opened: true,
        replyOf: 0
      },
@@ -174,9 +176,14 @@ export class EmailService {
       body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
        Unde repellendus accusamus quam esse qui ut facere minima,
        voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
-      date: new Date(),
+      date: new Date('2020'),
       opened: false,
-      replyOf: 0
+      replyOf: 0,
+      attachments: [{
+        name: 'sayantan-dev.pdf',
+        fileURL: 'assets/sayantan-dev.pdf',
+        imageURL: 'assets/sayantan-dev.PNG'
+      }]
     }
      ]
       
@@ -188,7 +195,7 @@ export class EmailService {
         body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
          Unde repellendus accusamus quam esse qui ut facere minima,
          voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
-        date: new Date(),
+        date: new Date(1590969600000),
         opened: true,
         replyOf: 0
       },
@@ -196,7 +203,7 @@ export class EmailService {
        body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
         Unde repellendus accusamus quam esse qui ut facere minima,
         voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
-       date: new Date(),
+       date: new Date(1590969600020),
        opened: true,
        replyOf: 0
      },
@@ -204,7 +211,7 @@ export class EmailService {
       body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
        Unde repellendus accusamus quam esse qui ut facere minima,
        voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
-      date: new Date(),
+      date: new Date(1590969600023),
       opened: true,
       replyOf: 0
     }
