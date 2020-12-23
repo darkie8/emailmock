@@ -5,19 +5,22 @@ export interface Attachment {
   name: string
 }
 export interface email {
-  body: string,
+  body?: string,
+  html?: string,
   attachments?: Attachment[],
   date: Date,
   opened: boolean,
-  replyOf: number,
+  replyOf?: number,
   replytTo?: string[],
-  replyFrom?: string
+  replyFrom?: string,
+  read: boolean
 }
 export interface EmailThread {
     To: string[],
     From: string,
     Subject: string,
-    emails: email[]
+    emails: email[],
+    opened?: boolean
 }
 
 @Injectable({
@@ -37,27 +40,39 @@ export class EmailService {
        From: 'Lorem@consectetur.com',
        Subject: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit.',
        emails: [{
-         body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+         body: `hi,<br>
+         Lorem ipsum dolor sit, amet consectetur adipisicing elit.
           Unde repellendus accusamus quam esse qui ut facere minima,
-          voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
+          voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!<br>
+          Warm Regards,<br>
+          New Love`,
          date: new Date('2018'),
-         opened: true,
+         opened: false,
+         read: true,
          replyOf: 0
        },
        {
-        body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-         Unde repellendus accusamus quam esse qui ut facere minima,
-         voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
+        body: `hi,<br>
+         Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+          Unde repellendus accusamus quam esse qui ut facere minima,
+          voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!<br>
+          Warm Regards,<br>
+          New Love`,
         date: new Date('2018'),
-        opened: true,
+        opened: false,
+        read: true,
         replyOf: 0
       },
       {
-       body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-        Unde repellendus accusamus quam esse qui ut facere minima,
-        voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
+       body: `hi,<br>
+         Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+          Unde repellendus accusamus quam esse qui ut facere minima,
+          voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!<br>
+          Warm Regards,<br>
+          New Love`,
        date: new Date('2018'),
-       opened: true,
+       opened: false,
+       read: false,
        replyOf: 0
      }
       ]
@@ -67,27 +82,34 @@ export class EmailService {
       From: 'Lorem@consectetur.com',
       Subject: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit.',
       emails: [{
-        body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-         Unde repellendus accusamus quam esse qui ut facere minima,
-         voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
+        body: `hi,<br>
+         Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+          Unde repellendus accusamus quam esse qui ut facere minima,
+          voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!<br>
+          Warm Regards,<br>
+          New Love`,
         date: new Date('2019'),
-        opened: true,
+        opened: false,
+        read: false,
         replyOf: 0
       },
       {
-       body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-        Unde repellendus accusamus quam esse qui ut facere minima,
-        voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
+       body: `hi,<br>
+         Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+          Unde repellendus accusamus quam esse qui ut facere minima,
+          voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!<br>
+          Warm Regards,<br>
+          New Love`,
        date: new Date('2019'),
-       opened: true,
+       opened: false,
+       read: false,
        replyOf: 0
      },
      {
-      body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-       Unde repellendus accusamus quam esse qui ut facere minima,
-       voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
+      body: `hi,<br> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde repellendus accusamus quam esse qui ut facere minima, voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!<br> Warm Regards,<br> New Love`,
       date: new Date('2019'),
-      opened: true,
+      opened: false,
+      read: false,
       replyOf: 0
     }
      ]
@@ -96,28 +118,24 @@ export class EmailService {
       To: ['Lorem@dolor.com', 'minus@dolor.in'],
       From: 'Lorem@consectetur.com',
       Subject: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit.',
-      emails: [{
-        body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-         Unde repellendus accusamus quam esse qui ut facere minima,
-         voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
-        date: new Date(),
-        opened: false,
-        replyOf: 0
-      },
+      emails: [
       {
-       body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-        Unde repellendus accusamus quam esse qui ut facere minima,
-        voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
+       body: `hi,<br>
+         Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+          Unde repellendus accusamus quam esse qui ut facere minima,
+          voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!<br>
+          Warm Regards,<br>
+          New Love`,
        date: new Date(),
        opened: false,
+       read: false,
        replyOf: 0
      },
      {
-      body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-       Unde repellendus accusamus quam esse qui ut facere minima,
-       voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
+      body: `hi,<br> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde repellendus accusamus quam esse qui ut facere minima, voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!<br> Warm Regards,<br> New Love`,
       date: new Date(),
       opened: false,
+      read: false,
       replyOf: 0
     }
      ]
@@ -127,27 +145,34 @@ export class EmailService {
       From: 'Lorem@consectetur.com',
       Subject: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit.',
       emails: [{
-        body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-         Unde repellendus accusamus quam esse qui ut facere minima,
-         voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
+        body: `hi,<br>
+         Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+          Unde repellendus accusamus quam esse qui ut facere minima,
+          voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!<br>
+          Warm Regards,<br>
+          New Love`,
         date: new Date(),
-        opened: true,
+        opened: false,
+        read: false,
         replyOf: 0
       },
       {
-       body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-        Unde repellendus accusamus quam esse qui ut facere minima,
-        voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
+       body: `hi,<br>
+         Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+          Unde repellendus accusamus quam esse qui ut facere minima,
+          voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!<br>
+          Warm Regards,<br>
+          New Love`,
        date: new Date(),
-       opened: true,
+       opened: false,
+       read: false,
        replyOf: 0
      },
      {
-      body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-       Unde repellendus accusamus quam esse qui ut facere minima,
-       voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
+      body: `hi,<br> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde repellendus accusamus quam esse qui ut facere minima, voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!<br> Warm Regards,<br> New Love`,
       date: new Date(),
       opened: false,
+      read: false,
       replyOf: 0
     }
      ]
@@ -157,27 +182,34 @@ export class EmailService {
       From: 'Lorem@consectetur.com',
       Subject: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit.',
       emails: [{
-        body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-         Unde repellendus accusamus quam esse qui ut facere minima,
-         voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
+        body: `hi,<br>
+         Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+          Unde repellendus accusamus quam esse qui ut facere minima,
+          voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!<br>
+          Warm Regards,<br>
+          New Love`,
         date: new Date('2020'),
-        opened: true,
+        opened: false,
+        read: false,
         replyOf: 0
       },
       {
-       body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-        Unde repellendus accusamus quam esse qui ut facere minima,
-        voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
+       body: `hi,<br>
+         Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+          Unde repellendus accusamus quam esse qui ut facere minima,
+          voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!<br>
+          Warm Regards,<br>
+          New Love`,
        date: new Date('2020'),
-       opened: true,
+       opened: false,
+       read: false,
        replyOf: 0
      },
      {
-      body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-       Unde repellendus accusamus quam esse qui ut facere minima,
-       voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
+      body: `hi,<br> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde repellendus accusamus quam esse qui ut facere minima, voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!<br> Warm Regards,<br> New Love`,
       date: new Date('2020'),
       opened: false,
+      read: false,
       replyOf: 0,
       attachments: [{
         name: 'sayantan-dev.pdf',
@@ -192,27 +224,34 @@ export class EmailService {
       From: 'Lorem@consectetur.com',
       Subject: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit.',
       emails: [{
-        body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-         Unde repellendus accusamus quam esse qui ut facere minima,
-         voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
+        body: `hi,<br>
+         Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+          Unde repellendus accusamus quam esse qui ut facere minima,
+          voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!<br>
+          Warm Regards,<br>
+          New Love`,
         date: new Date(1590969600000),
-        opened: true,
+        opened: false,
+        read: false,
         replyOf: 0
       },
       {
-       body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-        Unde repellendus accusamus quam esse qui ut facere minima,
-        voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
+       body: `hi,<br>
+         Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+          Unde repellendus accusamus quam esse qui ut facere minima,
+          voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!<br>
+          Warm Regards,<br>
+          New Love`,
        date: new Date(1590969600020),
-       opened: true,
+       opened: false,
+       read: false,
        replyOf: 0
      },
      {
-      body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-       Unde repellendus accusamus quam esse qui ut facere minima,
-       voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
+      body: `hi,<br> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde repellendus accusamus quam esse qui ut facere minima, voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!<br> Warm Regards,<br> New Love`,
       date: new Date(1590969600023),
-      opened: true,
+      opened: false,
+      read: false,
       replyOf: 0
     }
      ]
@@ -222,27 +261,34 @@ export class EmailService {
       From: 'Lorem@consectetur.com',
       Subject: 'Lorem ipsum dolor sit, amet consectetur adipisicing elit.',
       emails: [{
-        body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-         Unde repellendus accusamus quam esse qui ut facere minima,
-         voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
+        body: `hi,<br>
+         Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+          Unde repellendus accusamus quam esse qui ut facere minima,
+          voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!<br>
+          Warm Regards,<br>
+          New Love`,
         date: new Date(),
-        opened: true,
+        opened: false,
+        read: false,
         replyOf: 0
       },
       {
-       body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-        Unde repellendus accusamus quam esse qui ut facere minima,
-        voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
+       body: `hi,<br>
+         Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+          Unde repellendus accusamus quam esse qui ut facere minima,
+          voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!<br>
+          Warm Regards,<br>
+          New Love`,
        date: new Date(),
-       opened: true,
+       opened: false,
+       read: false,
        replyOf: 0
      },
      {
-      body: `Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-       Unde repellendus accusamus quam esse qui ut facere minima,
-       voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!`,
+      body: `hi,<br> Lorem ipsum dolor sit, amet consectetur adipisicing elit. Unde repellendus accusamus quam esse qui ut facere minima, voluptate iure quis odit quas error minus consectetur voluptatem numquam a soluta eum!<br> Warm Regards,<br> New Love`,
       date: new Date(),
       opened: false,
+      read: false,
       replyOf: 0
     }
      ]

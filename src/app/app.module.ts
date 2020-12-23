@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EmailSearchModule } from './email-search/email-search.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SafeHtmlPipe } from './pipes/safe-html.pipe';
 
 @NgModule({
   declarations: [

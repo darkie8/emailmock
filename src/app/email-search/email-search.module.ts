@@ -6,17 +6,20 @@ import { EmailResultsComponent } from './email-results/email-results.component';
 import {CalendarModule} from 'primeng/calendar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {AccordionModule} from 'primeng/accordion';
+import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
 
 
 
 @NgModule({
-  declarations: [CoreBackgroundComponent, SearchRangeComponent, EmailResultsComponent],
+  declarations: [CoreBackgroundComponent, SearchRangeComponent, EmailResultsComponent, SafeHtmlPipe],
   imports: [
     CommonModule,
     CalendarModule,
     FormsModule,
     ReactiveFormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    AccordionModule
   ]
 })
 export class EmailSearchModule { }

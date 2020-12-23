@@ -20,7 +20,7 @@
   <!-- > 0 emails -->
   <ng-template #elseTemplate>
     <div class="w-100">
-      <div class="w-100 row p-3 m-0"
+      <div class="w-100 row py-3 m-0 px-0"
         style="background-color: #efefef;color: rgb(99, 99, 99); border-bottom-color: #c1bdbd;border-bottom-style: solid;border-bottom-width: 2px;font-weight: 700;font-size:18;">
         <span class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">From</span>
         <span class="col-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">To</span>
@@ -43,23 +43,100 @@
 
 <!-- threadList -->
 <ng-template #threadList>
-  <div style="font-size: large;font-weight: 400;" class="w-100 row p-3 m-0 border-bottom border-secondary" *ngFor="let thread of threads; let i=index">
+  <p-accordion expandIcon="" collapseIcon="" [multiple]="true" (onOpen)="onTabOpenMain($event)" (onClose)="onTabCloseMain($event)">
+  <p-accordionTab *ngFor="let thread of threads; let i=index">
+    <ng-template pTemplate="header">
+  <div style="font-size: large;font-weight: 400;" class="w-100 row p-0 m-0" >
     <ng-container *ngTemplateOutlet="threadIndividual;context:({thread: thread})"></ng-container>
   </div>
+</ng-template>
+  <ng-template pTemplate="content">
+ <p-accordion [multiple]="true" expandIcon="pi pi-user" collapseIcon="pi pi-user" (onOpen)="onTabOpen($event, i)" (onClose)="onTabClose($event, i)">
+    <!-- individual email -->
+  <p-accordionTab *ngFor="let email of sortEmailsbyDateEmails(thread.emails); let m=index" [disabled]="isSelected(thread , m)" [selected]="isSelected(thread , m)">
+      <!-- individual email header -->
+      <ng-template pTemplate="header">
+        <div class="ml-3 w-100 mr-3">
+          <p class="m-1 w-100 d-flex justify-content-between">
+            <span>{{email.replyFrom ? email.replyFrom : thread.From}}</span>
+            <span style="font-size: small !important;">
+              {{email.date | date: 'MMM d, y, h:mm:ss a'}} ({{diffFromToday(email.date)}})
+              <span *ngIf="isThereAttachmentInEmail(email)" class="mx-2" style="cursor: pointer !important;position: relative;bottom: 3px;">
+                <svg style="width: 17px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13.93083 15"><defs><style>.a{fill:#666;}</style></defs><title>icon_clip</title><path class="a" d="M6.799,3.6254A2.30522,2.30522,0,1,0,3.56718,6.85622l4.304,4.304a.5222.5222,0,0,0,.7385-.7385l-4.304-4.304c-.53586-.53586-.87743-1.33808-.23084-1.98466.64553-.64659,1.4488-.304,1.98466.23189L11.032,9.3364c1.90632,1.90841,2.38159,2.78793,1.24615,3.92441-1.149,1.148-2.367.86385-4.20121-.96935L2.367,6.57941C1.1741,5.38653.33845,3.43842,1.90633,1.87159c1.86141-1.86141,3.98708-.03134,4.59293.57555l5.11038,5.11142a.5222.5222,0,0,0,.7385-.7385L7.23776,1.70864C5.18625-.34288,2.86-.56223,1.16678,1.13308c-1.711,1.71-1.5261,4.196.4617,6.18484l5.711,5.711C7.96726,13.6567,9.31161,15,10.85756,15a3.01214,3.01214,0,0,0,2.16014-1.00173c2.07554-2.07658.15564-3.99857-1.24616-5.40141Z"/></svg>
+              </span>
+              <span class="mx-2" style="cursor: pointer !important;">
+                <i class="pi pi-star-o"></i>
+              </span>
+            </span>
+          </p>
+          <p *ngIf="!email.opened && !isSelected(thread , m)"  class="m-1" style="height: 28px;
+          overflow: hidden;" >{{getInnerText(email.body)}}</p>
+          <p *ngIf="email.opened || isSelected(thread , m)" class="m-1" style="height: 28px;
+          overflow: hidden;">to <b>{{email.replyTo ? email.replyTo : thread.To}}</b></p>
+        </div>
+      </ng-template>
+      <!-- individual email header -->
+
+      <!-- individual email Body -->
+      <ng-template pTemplate="content">
+        <div class="d-flex justify-content-center m-0 m-md-2 m-l-3 m-xl-4">
+          <div class="card w-100 border-0">
+            <div class="card-body w-100 border-0 p-0">
+              <!-- <h5 class="card-title">Special title treatment</h5> -->
+              <div class="card-text">
+                <p>
+                  <span>
+                    From: {{email.replyFrom ? email.replyFrom : thread.From}}
+                  </span><br>
+                  <span>
+                    To: {{email.replyTo ? email.replyTo : thread.To}}
+                  </span><br>
+                  <span>
+                    Date: {{email.date}}
+                  </span><br>
+                </p>
+               <span [innerHtml]="email.body | safeHtml"></span><br>
+               <hr>
+               <h5 *ngIf="email.attachments" class="w-100">Attachments</h5>
+               <div class="mt-1 d-flex justify-content-start" *ngIf="email.attachments">
+                 <div *ngFor="let attachment of email.attachments; let n=index">
+                   <a [href]="attachment.fileURL">
+                     <div class="w-100 d-flex justify-content-center">
+                      <img width="100" [src]="attachment.imageURL" alt=""><br>
+                     </div>
+                     <span class="w-100" style="text-align: center;">{{attachment.name}}</span>
+                   </a>
+                 </div>
+               </div>
+              </div>
+              <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <!-- individual email Body -->
+    </p-accordionTab>
+    <!-- individual email -->
+</p-accordion>
+  </ng-template>
+</p-accordionTab>
+</p-accordion>
 </ng-template>
 <!-- threadList -->
 
 <!-- threadIndividual -->
 <ng-template #threadIndividual let-threadData="thread">
 
-  <span class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 listtexts">{{threadData.From}}</span>
-  <span class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 listtexts">{{threadData.To}}</span>
+  <span class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 listtexts pl-2">{{threadData.From}}</span>
+  <span class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 listtexts pl-2">{{threadData.To}}</span>
   <span class="col-1 col-sm-1 col-md-1 col-lg-1 col-xl-1 listtexts d-flex justify-content-center">
-    <span *ngIf="countOpened(threadData.emails) !== 0" class="badgenew px-1 align-items-center py-0" style="font-size: large;font-weight: bold;">+{{countOpened(threadData.emails)}}</span>
+    <span *ngIf="countRead(threadData.emails) !== 0" class="badgenew px-1 align-items-center py-0" style="font-size: large;font-weight: bold;">+{{countRead(threadData.emails)}}</span>
   </span>
-  <span class="col-5  col-sm-5 col-md-5 col-lg-5 col-xl-5 listtexts">{{threadData.Subject}}</span>
+  <span class="col-5  col-sm-5 col-md-5 col-lg-5 col-xl-5 listtexts pl-2">{{threadData.Subject}}</span>
   <span class="col-1  col-sm-1 col-md-1 col-lg-1col-xl-1 listtexts" style="text-align: end;">
-    <span *ngIf="isThereAttachments(threadData)"><img width="23" src="assets/icon_clip.svg" alt=""></span>
+    <span *ngIf="isThereAttachments(threadData)">
+      <svg style="width: 23px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 13.93083 15"><defs><style>.a{fill:#666;}</style></defs><title>icon_clip</title><path class="a" d="M6.799,3.6254A2.30522,2.30522,0,1,0,3.56718,6.85622l4.304,4.304a.5222.5222,0,0,0,.7385-.7385l-4.304-4.304c-.53586-.53586-.87743-1.33808-.23084-1.98466.64553-.64659,1.4488-.304,1.98466.23189L11.032,9.3364c1.90632,1.90841,2.38159,2.78793,1.24615,3.92441-1.149,1.148-2.367.86385-4.20121-.96935L2.367,6.57941C1.1741,5.38653.33845,3.43842,1.90633,1.87159c1.86141-1.86141,3.98708-.03134,4.59293.57555l5.11038,5.11142a.5222.5222,0,0,0,.7385-.7385L7.23776,1.70864C5.18625-.34288,2.86-.56223,1.16678,1.13308c-1.711,1.71-1.5261,4.196.4617,6.18484l5.711,5.711C7.96726,13.6567,9.31161,15,10.85756,15a3.01214,3.01214,0,0,0,2.16014-1.00173c2.07554-2.07658.15564-3.99857-1.24616-5.40141Z"/></svg>
+      </span> 
   </span>
   <span class="col-1 col-sm-1 col-md-1 col-lg-1 col-xl-1 listtexts px-0" style="color: black;font-weight: 700;">
     <ng-container
@@ -92,3 +169,5 @@
   
 </ng-template>
 <!-- dateTemplate -->
+
+
