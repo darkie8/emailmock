@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'search',
@@ -9,9 +9,18 @@ export class SearchRangeComponent implements OnInit {
 
   rangeDates: Date[];
   maxDate= new Date();
+  searchRange = `1980:${(new Date()).getFullYear()}`
+  @Output() rangeDateFlow = new EventEmitter(true);
   constructor() { }
 
   ngOnInit(): void {
   }
-
+  /**
+   * selecting date range
+   */
+  public onSelectRange() {
+    if(this.rangeDates.every(date => date)){
+    this.rangeDateFlow.emit(this.rangeDates);
+    }
+  }
 }

@@ -1,13 +1,10 @@
-<div style="width: fit-content;border: 1px solid #ced4da;border-radius: 10px;" class="d-flex flex-row">
+<div style="width: fit-content;border: 1px solid #ced4da;border-radius: 10px;" class="m-4 p-0 m-md-0 p-md-0 d-flex flex-row">
     <div>
-        <img src="assets/icon_calender.svg" width="25" style="position: absolute;
-        top: 62px;
-        left: 70px;">
-        <p-calendar [(ngModel)]="rangeDates" [inputStyle]="{fontSize: '1.1rem',borderRadius: '10px',paddingLeft: '59px',paddingRight: '40px',fontWeight: '500', paddingTop: '10px',paddingBottom: '10px', borderTopRightRadius: '0px', borderBottomRightRadius: '0px', background: 'none'}" placeholder="Search with date range" selectionMode="range" [maxDate]="maxDate" dateFormat="yy/m/d" [defaultDate]="maxDate" [readonlyInput]="true" inputId="range" [readonlyInput]="true"></p-calendar>
+        <img id="calenderImg" src="assets/icon_calender.svg" width="25" >
+        <p-calendar [(ngModel)]="rangeDates" [inputStyle]="{fontSize: '1.1rem',borderRadius: '10px',paddingLeft: '59px',paddingRight: '40px',fontWeight: '500', paddingTop: '10px',paddingBottom: '10px', borderTopRightRadius: '0px', borderBottomRightRadius: '0px', background: 'none'}" placeholder="Search with date range" selectionMode="range" [maxDate]="maxDate" dateFormat="yy/m/d" [monthNavigator]="true" [yearRange]="searchRange" [yearNavigator]="true" [defaultDate]="maxDate" [readonlyInput]="true" inputId="range" [readonlyInput]="true"></p-calendar>
     </div>
-    <div style="    padding-right: 20px;
+    <div class="buttonnew" style="padding-right: 20px;
     padding-left: 20px;
-    padding-top: 10px;background-color: #efefef;border-radius: 0px 10px 10px 0px;">
-        <img src="assets/icon_search.svg" width="24"> 
-    </div>
+    padding-top: 10px;background-color: #efefef;border-radius: 0px 10px 10px 0px;cursor: pointer !important;" (click)="onSelectRange()">
+<svg style="width: 24px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17.9803 18"><defs><style>.a{fill:#666;}</style></defs><title>icon_search</title><path class="a" d="M17.81684,17.04048,12.86753,12.064a7.33089,7.33089,0,1,0-.79573.79645L17.018,17.83373a.5629.5629,0,1,0,.79885-.79325ZM7.32474,13.47375a6.16023,6.16023,0,0,1-6.16583-6.1546V7.31352a6.16022,6.16022,0,1,1,6.16583,6.16023Z"/></svg>    </div>
 </div>

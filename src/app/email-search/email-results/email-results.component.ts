@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { EmailService, EmailThread, email, Attachment } from 'src/app/services/email.service';
 
 @Component({
@@ -6,22 +6,37 @@ import { EmailService, EmailThread, email, Attachment } from 'src/app/services/e
   templateUrl: './email-results.component.html',
   styleUrls: ['./email-results.component.css']
 })
-export class EmailResultsComponent implements OnInit {
+export class EmailResultsComponent implements OnInit, OnChanges {
   mailCount = 0;
   threads: EmailThread[];
   descending = false;
-  // readingEvent: EventEmitter<{threadpos: number, index: number}>[]
+  @Input() rangeDateFlowMain: Date[];
+  @Input() screenwidth: number;
+  threadsDefault: EmailThread[];
   constructor(private emailService: EmailService) { }
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes.rangeDateFlowMain?.currentValue) {
+      console.log(this.threadsDefault);
+      
+      this.threads = this.filteringbetweenDates(this.threadsDefault, changes.rangeDateFlowMain.currentValue);
+      console.log(this.threads);
+      this.mailCount = this.threads.length;
+    }
+    if(changes.screenwidth?.currentValue) {
+      this.screenwidth = changes.screenwidth.currentValue;
+      
+    }
+  }
   ngOnInit(): void {
     this.threads = this.sortByDateThreads(this.renderThreadList(), this.descending);
-    // this.readingEvent = this.threads.map(el => (new EventEmitter()));
+    this.threadsDefault = [...this.threads];
     this.mailCount = this.threads.length;
   }
   /**
    * Render Thread List
    */
   public renderThreadList(): EmailThread[] {
-    return this.emailService.getEmailThreads();
+    return this.threads ?? this.emailService.getEmailThreads();
   }
   /**
    * dateDifference
@@ -42,7 +57,7 @@ export class EmailResultsComponent implements OnInit {
    * sort By Date Threads
    */
   private sortByDateThreads(threads: EmailThread[], descending?: boolean): EmailThread[] {
-    const dateToTs = (d: EmailThread) => Date.parse(d.emails[d.emails.length-1].date.toISOString())
+    const dateToTs = (d: EmailThread) => Date.parse(this.sortEmailsbyDateEmails(d.emails, true)[d.emails.length-1].date.toISOString())
     return !descending ? threads.sort((a, b) => dateToTs(b) - dateToTs(a)) : threads.sort((a, b) => dateToTs(a) - dateToTs(b));
   }
   /**
@@ -55,7 +70,7 @@ export class EmailResultsComponent implements OnInit {
   /**
    * sortEmailsbydate
    */
-  public sortEmailsbyDateEmails(emails: email[], descending: boolean) {
+  public sortEmailsbyDateEmails(emails: email[], descending?: boolean) {
     const dateToTs = (d: email) => Date.parse(d.date.toISOString())
     return !descending ? emails.sort((a, b) => dateToTs(b) - dateToTs(a)) : emails.sort((a, b) => dateToTs(a) - dateToTs(b));
   }
@@ -98,6 +113,8 @@ export class EmailResultsComponent implements OnInit {
    */
   public onTabOpenMain(e: any): void {
     this.threads[e.index].opened = true;
+    const newsorted = this.sortEmailsbyDateEmails(this.threads[e.index].emails, true);
+    this.threads[e.index].emails[this.threads[e.index].emails.indexOf(newsorted[newsorted.length - 1])].read = true;
   }
   /**
    * thread tab close
@@ -110,14 +127,7 @@ export class EmailResultsComponent implements OnInit {
    * last index needs to be selected of email
    */
   public isSelected(thread: EmailThread, index: number): boolean {
-    const islast = thread.emails.length === index + 1;
-    const pos = this.threads.indexOf(thread);
-    if(islast && !this.threads[pos].emails[index].read) {
-      // this.readingEvent[pos].emit({threadpos: pos, index})
-      this.threads[pos].emails[index].read = true;
-      // setTimeout(() => {}, 10);
-    }
-    return islast;
+    return thread.emails.length === index + 1;
   }
   /**
    * day difference From Today
@@ -134,5 +144,19 @@ export class EmailResultsComponent implements OnInit {
     elementA.innerHTML = data;
     return elementA.innerText;
     
+  }
+  /**
+   * filtering with search range
+   */
+  private filteringbetweenDates(threads: EmailThread[], range: Date[]) {
+    const dateToTs = (d: EmailThread) => Date.parse(this.sortEmailsbyDateEmails(d.emails, true)[d.emails.length-1].date.toISOString())
+    return threads.filter(thread => {
+      const datenew = dateToTs(thread);
+      range[0].setHours(0, 0, 0, 0);
+      range[1].setHours(24, 0, 0, 0);
+      console.log(Date.parse(range[0].toISOString()), datenew, Date.parse(range[1].toISOString()));
+      
+      return Date.parse(range[0].toISOString()) < datenew && datenew <= Date.parse(range[1].toISOString())
+    })
   }
 }
