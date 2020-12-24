@@ -18,10 +18,10 @@ export class EmailResultsComponent implements OnInit, OnChanges {
   constructor(private readonly emailService: EmailService, private readonly messageService: MessageService) { }
   ngOnChanges(changes: SimpleChanges): void {
     if(changes.rangeDateFlowMain?.currentValue) {
-      console.log(this.threadsDefault);
+      // console.log(this.threadsDefault);
       
       this.threads = this.filteringbetweenDates(this.threadsDefault, changes.rangeDateFlowMain.currentValue);
-      console.log(this.threads);
+      // console.log(this.threads);
       this.mailCount = this.threads.length;
       this.mailerror(this.mailCount);
     }
