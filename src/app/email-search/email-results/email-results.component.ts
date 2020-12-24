@@ -1,10 +1,12 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { EmailService, EmailThread, email, Attachment } from 'src/app/services/email.service';
+import {MessageService} from 'primeng/api';
 
 @Component({
   selector: 'result',
   templateUrl: './email-results.component.html',
-  styleUrls: ['./email-results.component.css']
+  styleUrls: ['./email-results.component.css'],
+  providers: [MessageService]
 })
 export class EmailResultsComponent implements OnInit, OnChanges {
   mailCount = 0;
@@ -13,7 +15,7 @@ export class EmailResultsComponent implements OnInit, OnChanges {
   @Input() rangeDateFlowMain: Date[];
   @Input() screenwidth: number;
   threadsDefault: EmailThread[];
-  constructor(private emailService: EmailService) { }
+  constructor(private readonly emailService: EmailService, private readonly messageService: MessageService) { }
   ngOnChanges(changes: SimpleChanges): void {
     if(changes.rangeDateFlowMain?.currentValue) {
       console.log(this.threadsDefault);
@@ -21,6 +23,7 @@ export class EmailResultsComponent implements OnInit, OnChanges {
       this.threads = this.filteringbetweenDates(this.threadsDefault, changes.rangeDateFlowMain.currentValue);
       console.log(this.threads);
       this.mailCount = this.threads.length;
+      this.mailerror(this.mailCount);
     }
     if(changes.screenwidth?.currentValue) {
       this.screenwidth = changes.screenwidth.currentValue;
@@ -31,6 +34,15 @@ export class EmailResultsComponent implements OnInit, OnChanges {
     this.threads = this.sortByDateThreads(this.renderThreadList(), this.descending);
     this.threadsDefault = [...this.threads];
     this.mailCount = this.threads.length;
+    this.mailerror(this.mailCount);
+  }
+  /**
+   * mailerror
+   */
+  private mailerror(mailCount: number) {
+    if(mailCount === 0) {
+      this.messageService.add({ key: 'err' ,severity:'warn', summary: 'Warn', detail: 'Emails not found !'})
+    }
   }
   /**
    * Render Thread List
@@ -133,7 +145,7 @@ export class EmailResultsComponent implements OnInit, OnChanges {
    * day difference From Today
    */
   public diffFromToday(d: Date): string {
-    const diff = (new Date).getDate() - d.getDate() ;
+    let diff = Math.floor(((new Date()) as any - (d as any))/(1000 * 3600 * 24)) ;
     return diff === 0 ? `Today` : `${diff} day${diff > 1 ? 's' : ''}`
   }
   /**
@@ -149,14 +161,36 @@ export class EmailResultsComponent implements OnInit, OnChanges {
    * filtering with search range
    */
   private filteringbetweenDates(threads: EmailThread[], range: Date[]) {
-    const dateToTs = (d: EmailThread) => Date.parse(this.sortEmailsbyDateEmails(d.emails, true)[d.emails.length-1].date.toISOString())
+    const dateToTs = (d: EmailThread) => (this.sortEmailsbyDateEmails(d.emails, true)[d.emails.length-1].date)
     return threads.filter(thread => {
       const datenew = dateToTs(thread);
       range[0].setHours(0, 0, 0, 0);
       range[1].setHours(24, 0, 0, 0);
-      console.log(Date.parse(range[0].toISOString()), datenew, Date.parse(range[1].toISOString()));
-      
-      return Date.parse(range[0].toISOString()) < datenew && datenew <= Date.parse(range[1].toISOString())
+      return range[0] < datenew && datenew <= range[1]
     })
+  }
+  /**
+   * label
+   */
+  public label(index: number, i: number) {
+    const importance = !!this.threads[i].emails[index].important;
+    this.threads[i].emails[index].important = !importance;
+    // usually server side API calling happens here
+    this.messageService.add({ key: 'err' ,severity:'info', summary: 'Info', detail: `Email is marked as ${!importance ? 'Unimportant' : 'Important'} !`})
+
+  }
+  /**
+   * Delete email
+   */
+  public deleteEmail(index: number, i: number) {
+    this.threads[i].emails.splice(index, 1);
+    if(this.threads[i].emails.length === 0) {
+      this.threads.splice(i, 1)
+    } else {
+      this.threads[i].emails[index - 1].read = true;
+    }
+    // usually server side API calling happens here
+    this.messageService.add({ key: 'err' ,severity:'warn', summary: 'Warn', detail: `Email has been deleted !`})
+
   }
 }

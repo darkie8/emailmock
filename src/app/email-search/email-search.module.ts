@@ -8,7 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {AccordionModule} from 'primeng/accordion';
 import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
-
+import {ToastModule} from 'primeng/toast';
 
 
 @NgModule({
@@ -19,7 +19,8 @@ import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    AccordionModule
+    AccordionModule,
+    ToastModule
   ]
 })
 export class EmailSearchModule { }

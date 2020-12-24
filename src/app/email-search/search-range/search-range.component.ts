@@ -19,7 +19,7 @@ export class SearchRangeComponent implements OnInit {
    * selecting date range
    */
   public onSelectRange() {
-    if(this.rangeDates.every(date => date)){
+    if(this.rangeDates?.every(date => date)){
     this.rangeDateFlow.emit(this.rangeDates);
     }
   }

@@ -7,8 +7,47 @@
     color: #fff;
     background-color: #94979a;
     border-radius: 5px;
+    font-size: small;font-weight: bold;height: fit-content;
+    margin-top: 5px;
 }
-a:hover {
-    color: blue !important;
-    text-decoration: none !important;
+.smallscreenThreadHeader {
+    margin-left: 1.2rem;
+}
+.listtextsSub {
+    font-size: 20px;
+      font-weight: normal;
+      height: 27px;
+      width: 300px;
+}
+.listtextsTo {
+    font-size: 16px;font-weight: normal; width: 240px;
+}
+.listtextsFrom {
+    font-size: 16px;font-weight: bold;
+}
+.p-badge-new {
+    position: absolute;
+    left: 29px;
+    bottom: 50px;
+    font-size: 20px;
+}
+@media only screen and (max-width: 767px) { 
+    .p-badge-new {
+          left: 19px;
+          bottom: 59px;
+    }
+}
+@media only screen and (max-width: 340px) { 
+    .smallscreenThreadHeader {
+        margin-left: 1rem;
+    }
+    .listtextsSub {
+        font-size: 18px;
+          font-weight: normal;
+          height: 27px;
+          width: 260px;
+    }
+    .listtextsTo {
+        font-size: 14px;font-weight: normal; width: 230px;
+    }
 }
