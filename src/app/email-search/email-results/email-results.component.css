@@ -17,13 +17,18 @@
     font-size: 20px;
       font-weight: normal;
       height: 27px;
-      width: 300px;
+      width: 500px;
 }
 .listtextsTo {
-    font-size: 16px;font-weight: normal; width: 240px;
+    font-size: 16px;font-weight: normal;
 }
 .listtextsFrom {
     font-size: 16px;font-weight: bold;
+}
+.emailTextTo {
+    height: 28px;
+    overflow: hidden;
+    width: 500px;
 }
 .p-badge-new {
     position: absolute;
@@ -35,6 +40,15 @@
     .p-badge-new {
           left: 19px;
           bottom: 59px;
+    }
+    .listtextsSub {
+          width: 300px;
+    }
+    .listtextsTo {
+     width: 240px;
+    }
+    .emailTextTo {
+        width: 250px;
     }
 }
 @media only screen and (max-width: 340px) { 

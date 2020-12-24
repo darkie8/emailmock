@@ -98,8 +98,7 @@
           </p>
           <p *ngIf="!email.opened && !isSelected(thread , m)"  class="m-1 listtexts" style="height: 28px;
           overflow: hidden;width: 250px;" >{{getInnerText(email.body)}}</p>
-          <p *ngIf="email.opened || isSelected(thread , m)" class="m-1 font-weight-bold listtexts"  style="height: 28px;
-          overflow: hidden;;width: 250px;"><span *ngIf="(screenwidth > 767)">to</span> {{email.replyTo ? email.replyTo : thread.To}}</p>
+          <p *ngIf="email.opened || isSelected(thread , m)" class="m-1 font-weight-bold listtexts emailTextTo" ><span *ngIf="(screenwidth > 767)">to</span> {{email.replyTo ? email.replyTo : thread.To}}</p>
 
           <span *ngIf="!email.read" class="p-badge-new p-badge  p-badge-warning">!</span>
 
