@@ -34,6 +34,6 @@
 
 
 ## Conclusion
-    Even though, this application is a mock up, with further time investment it can be made into an actual production grade app as every approach is modular. 
+   Even though, this application is a mock up, with further time investment it can be made into an actual production grade app as every approach is modular. 
 
      
