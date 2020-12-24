@@ -176,7 +176,7 @@ export class EmailResultsComponent implements OnInit, OnChanges {
     const importance = !!this.threads[i].emails[index].important;
     this.threads[i].emails[index].important = !importance;
     // usually server side API calling happens here
-    this.messageService.add({ key: 'err' ,severity:'info', summary: 'Info', detail: `Email is marked as ${!importance ? 'Unimportant' : 'Important'} !`})
+    this.messageService.add({ key: 'err' ,severity:'info', summary: 'Info', detail: `Email is marked as ${importance ? 'Unimportant' : 'Important'} !`})
 
   }
   /**
